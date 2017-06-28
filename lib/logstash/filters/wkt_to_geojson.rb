@@ -1,41 +1,32 @@
 # encoding: utf-8
 require "logstash/filters/base"
 require "logstash/namespace"
+require "rgeo"
+require "rgeo-geojson"
 
-# This  filter will replace the contents of the default 
-# message field with whatever you specify in the configuration.
-#
-# It is only intended to be used as an .
 class LogStash::Filters::WktToGeojson < LogStash::Filters::Base
 
-  # Setting the config_name here is required. This is how you
-  # configure this filter from your Logstash config.
-  #
-  # filter {
-  #    {
-  #     message => "My message..."
-  #   }
-  # }
-  #
   config_name "wkt_to_geojson"
-  
-  # Replace the message with this value.
-  config :message, :validate => :string, :default => "Hello World!"
-  
+
+  config :in_field, :validate => :string, :default => "message"
+  config :out_field, :validate => :string
 
   public
   def register
-    # Add instance variables 
+    @parser = RGeo::WKRep::WKTParser.new()
   end # def register
 
   public
   def filter(event)
 
-    if @message
-      # Replace the event message with our message as configured in the
-      # config file.
-      event["message"] = @message
+    if @out_field.nil?
+      @out_field = @in_field
     end
+
+    geo = @parser.parse(event.get(@in_field))
+    json = RGeo::GeoJSON.encode(geo)
+
+    event.set(@out_field, json.to_s)
 
     # filter_matched should go in the last line of our successful code
     filter_matched(event)

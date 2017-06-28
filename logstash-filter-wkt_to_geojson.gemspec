@@ -2,11 +2,10 @@ Gem::Specification.new do |s|
   s.name          = 'logstash-filter-wkt_to_geojson'
   s.version       = '0.1.0'
   s.licenses      = ['Apache License (2.0)']
-  s.summary       = 'TODO: Write a short summary, because Rubygems requires one.'
-  s.description   = 'TODO: Write a longer description or delete this line.'
-  s.homepage      = 'TODO: Put your plugin''s website or public repo URL here.'
+  s.summary       = 'Converts WKT geography shapes to GeoJSON.'
+  s.homepage      = 'https://kalmas.net'
   s.authors       = ['kalmas']
-  s.email         = 'kyle.almas@dominionenterprises.com'
+  s.email         = 'kylealmas@gmail.com'
   s.require_paths = ['lib']
 
   # Files
