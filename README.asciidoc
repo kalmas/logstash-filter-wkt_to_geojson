@@ -1,6 +1,6 @@
 = WKT to GeoJSON Logstash Filter =
 
-Parses WKT encoded geography on logstash event and converts it to GeoJSON.
+Parses WKT encoded geography on Logstash event and converts it to GeoJSON.
 
 [source,logstash]
 ----
@@ -13,4 +13,34 @@ filter {
 }
 ----
 
-For walk through of developing logstash filter plugin see https://www.elastic.co/guide/en/logstash/current/_how_to_write_a_logstash_filter_plugin.html
+For walk through of developing Logstash filter plugin see https://www.elastic.co/guide/en/logstash/current/_how_to_write_a_logstash_filter_plugin.html
+
+== To Use ==
+
+- Install Dependencies
+
+[source,sh]
+----
+bundle install
+----
+
+- Test
+
+[source,sh]
+----
+bundle exec rspec
+----
+
+- Build Gem
+
+[source,sh]
+----
+gem build logstash-filter-wkt_to_geojson.gemspec
+----
+
+- Install Gem as Logstash plugin
+
+[source,sh]
+----
+logstash-plugin install logstash-filter-wkt_to_geojson-0.1.0.gem
+----
