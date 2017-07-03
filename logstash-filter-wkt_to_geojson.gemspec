@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name          = 'logstash-filter-wkt_to_geojson'
   s.version       = '0.1.0'
-  s.licenses      = ['Apache License (2.0)']
+  s.licenses      = ['Apache-2.0']
   s.summary       = 'Converts WKT geography shapes to GeoJSON.'
   s.homepage      = 'https://kalmas.net'
   s.authors       = ['kalmas']
@@ -15,6 +15,9 @@ Gem::Specification.new do |s|
 
   # Special flag to let us know this is actually a logstash plugin
   s.metadata = { "logstash_plugin" => "true", "logstash_group" => "filter" }
+
+  s.add_dependency 'rgeo', '0.6.0'
+  s.add_dependency 'rgeo-geojson', '0.4.3'
 
   # Gem dependencies
   s.add_runtime_dependency "logstash-core-plugin-api", ">= 1.60", "<= 2.99"
