@@ -10,7 +10,7 @@ class LogStash::Filters::WktToGeojson < LogStash::Filters::Base
   config_name "wkt_to_geojson"
 
   config :field, :validate => :string, :required => true
-  config :target, :validate => :string
+  config :target, :validate => :string, :default => 'geo_json'
   config :tag_on_parse_failure, :validate => :array, :default => [ '_wkt_parse_failure' ]
 
   public
@@ -22,15 +22,11 @@ class LogStash::Filters::WktToGeojson < LogStash::Filters::Base
   public
   def filter(event)
 
-    if @target.nil?
-      @target = @field
-    end
-
     wkt = event.get(@field)
 
     begin
       geo = @parser.parse(wkt)
-      json = RGeo::GeoJSON.encode(geo)
+      json = @encoder.encode(geo)
       event.set(@target, json.to_json)
     rescue Exception => e
       @logger.error('WKT Parse Error',
