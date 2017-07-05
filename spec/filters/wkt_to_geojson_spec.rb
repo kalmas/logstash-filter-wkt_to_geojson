@@ -7,7 +7,7 @@ describe LogStash::Filters::WktToGeojson do
     let(:config) do <<-CONFIG
       filter {
         wkt_to_geojson {
-            field => "geometry"
+            source => "geometry"
         }
       }
     CONFIG
@@ -22,7 +22,7 @@ describe LogStash::Filters::WktToGeojson do
     let(:config) do <<-CONFIG
       filter {
         wkt_to_geojson {
-          field => "geometry"
+          source => "geometry"
           target => "geoff_jason"
         }
       }
@@ -39,7 +39,7 @@ describe LogStash::Filters::WktToGeojson do
     let(:config) do <<-CONFIG
       filter {
         wkt_to_geojson {
-          field => "geometry"
+          source => "geometry"
         }
       }
     CONFIG
@@ -56,8 +56,8 @@ describe LogStash::Filters::WktToGeojson do
     let(:config) do <<-CONFIG
       filter {
         wkt_to_geojson {
-          field => "geometry"
-          tag_on_parse_failure => [ "oppsie" ]
+          source => "geometry"
+          tag_on_failure => [ "oppsie" ]
         }
       }
     CONFIG
@@ -74,7 +74,7 @@ describe LogStash::Filters::WktToGeojson do
     let(:config) do <<-CONFIG
       filter {
         wkt_to_geojson {
-          field => "not_a_field"
+          source => "not_a_field"
         }
       }
     CONFIG
