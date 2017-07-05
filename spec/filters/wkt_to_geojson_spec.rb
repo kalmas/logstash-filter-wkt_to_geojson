@@ -29,9 +29,9 @@ describe LogStash::Filters::WktToGeojson do
     CONFIG
     end
 
-    sample("geometry" => "GeometryCollection(Point(3 5), LineString(-2 0, -3 -4))") do
+    sample("geometry" => "GEOMETRYCOLLECTION(POINT(3 5), LINESTRING(-2 0, -3 -4))") do
       expect(subject.get('geoff_jason')).to eq("{\"type\":\"GeometryCollection\",\"geometries\":[{\"type\":\"Point\",\"coordinates\":[3.0,5.0]},{\"type\":\"LineString\",\"coordinates\":[[-2.0,0.0],[-3.0,-4.0]]}]}")
-      expect(subject.get('geometry')).to eq("GeometryCollection(Point(3 5), LineString(-2 0, -3 -4))")
+      expect(subject.get('geometry')).to eq("GEOMETRYCOLLECTION(POINT(3 5), LINESTRING(-2 0, -3 -4))")
     end
   end
 
@@ -45,9 +45,9 @@ describe LogStash::Filters::WktToGeojson do
     CONFIG
     end
 
-    sample("geometry" => "MULTIPOLYGON (((40, 20, 45, 40)))") do
+    sample("geometry" => "MULTIPOLYGON((()))") do
       expect(subject).to_not include("geo_json")
-      expect(subject.get('geometry')).to eq("MULTIPOLYGON (((40, 20, 45, 40)))")
+      expect(subject.get('geometry')).to eq("MULTIPOLYGON((()))")
       expect(subject.get('tags')).to include('_wkt_parse_failure')
     end
   end
@@ -80,7 +80,7 @@ describe LogStash::Filters::WktToGeojson do
     CONFIG
     end
 
-    sample("geometry" => "GeometryCollection(Point(3 5), LineString(-2 0, -3 -4))") do
+    sample("geometry" => "GEOMETRYCOLLECTION(POINT(3 5), LINESTRING(-2 0, -3 -4))") do
       expect(subject).to_not include("geo_json")
     end
   end
