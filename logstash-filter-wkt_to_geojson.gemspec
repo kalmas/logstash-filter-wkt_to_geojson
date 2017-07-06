@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = 'logstash-filter-wkt_to_geojson'
-  s.version       = '0.1.2'
+  s.version       = '0.1.4'
   s.licenses      = ['Apache-2.0']
   s.summary       = 'Logstash filter to convert WKT geography shapes to GeoJSON.'
   s.homepage      = 'https://github.com/kalmas/logstash-filter-wkt_to_geojson'

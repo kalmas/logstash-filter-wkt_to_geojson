@@ -1,6 +1,7 @@
 # encoding: utf-8
 require "logstash/filters/base"
 require "logstash/namespace"
+require 'json'
 require 'geo_ruby'
 require 'geo_ruby/ewk'
 require 'geo_ruby/geojson'
@@ -11,6 +12,7 @@ class LogStash::Filters::WktToGeojson < LogStash::Filters::Base
 
   config :source, :validate => :string, :required => true
   config :target, :validate => :string, :default => 'geo_json'
+  config :bbox, :validate => :string
   config :tag_on_failure, :validate => :array, :default => [ '_wkt_parse_failure' ]
 
   public
@@ -31,8 +33,13 @@ class LogStash::Filters::WktToGeojson < LogStash::Filters::Base
         raise "Failed to parse to SimpleFeature"
       end
 
+      if (! @bbox.nil?)
+        bbox = factory.geometry.bounding_box
+        event.set(@bbox, ([ bbox[0].x, bbox[0].y, bbox[1].x, bbox[1].y ]).to_json)
+      end
+
       event.set(@target, factory.geometry.to_json)
-      factory.geometry.to_json
+
     rescue Exception => e
       @logger.error('WKT Parse Error',
           :wkt => wkt, :exception => e)

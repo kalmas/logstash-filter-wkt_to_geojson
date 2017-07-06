@@ -7,7 +7,7 @@ describe LogStash::Filters::WktToGeojson do
     let(:config) do <<-CONFIG
       filter {
         wkt_to_geojson {
-            source => "geometry"
+          source => "geometry"
         }
       }
     CONFIG
@@ -15,6 +15,23 @@ describe LogStash::Filters::WktToGeojson do
 
     sample("geometry" => "POLYGON ((0.0 0.0, 5.0 0.0, 5.0 5.0, 0.0 5.0, 0.0 0.0), (2.0 2.0, 2.0 3.0, 3.0 3.0, 3.0 2.0, 2.0 2.0))") do
       expect(subject.get('geo_json')).to eq("{\"type\":\"Polygon\",\"coordinates\":[[[0.0,0.0],[5.0,0.0],[5.0,5.0],[0.0,5.0],[0.0,0.0]],[[2.0,2.0],[2.0,3.0],[3.0,3.0],[3.0,2.0],[2.0,2.0]]]}")
+      expect(subject).to_not include("bbox")
+    end
+  end
+
+  describe "Calculate Bounding Box" do
+    let(:config) do <<-CONFIG
+      filter {
+        wkt_to_geojson {
+          source => "geometry"
+          bbox => "bbox"
+        }
+      }
+    CONFIG
+    end
+
+    sample("geometry" => "LINESTRING(10 40, 40 30, 20 20, 30 10)") do
+      expect(subject.get('bbox')).to eq("[10.0,10.0,40.0,40.0]")
     end
   end
 
@@ -40,6 +57,7 @@ describe LogStash::Filters::WktToGeojson do
       filter {
         wkt_to_geojson {
           source => "geometry"
+          bbox => "bbox"
         }
       }
     CONFIG
